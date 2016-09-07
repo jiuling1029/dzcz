@@ -19,6 +19,34 @@ class AdminPostController extends AdminbaseController {
 		$this->terms_model = D("Portal/Terms");
 		$this->term_relationships_model = D("Portal/TermRelationships");
 	}
+	function push(){
+		$id = intval(I("get.id"));
+		$post = $this->posts_model->where("id=$id")->find();
+		if(empty($post)){
+			$this->error('文章不存在');
+		}else{
+			$jpush = new \Common\Lib\Jpush_send();
+			$receive = 'all';//全部 
+			// $receive = array('tag'=>array('中国'));//标签 
+	        // $receive = array('alias'=>array('2'),'alias'=>array('1'));//别名 
+	        $content = $post['post_title']; 
+	        $m_type = 'local'; // local 表示自身的数据，url 表示打开外部链接 
+	        $m_txt = $id;  //local时表示文章id，url时表示链接
+	        $m_time = '86400'; //离线保留时间：1天
+	        $res = $jpush->send_pub($receive, $content ,$m_type, $m_txt ,$m_time); 
+	        if($res){
+	        	$article = array(
+	        		'id' => $id,
+	        		'push' => 1
+	        	);
+				$this->posts_model->save($article);
+	        	$this->success($jpush->getMessage());
+	        }else{
+	        	$this->error($jpush->getMessage());
+	        }
+		}
+		
+	}
 	function index(){
 		$this->_lists();
 		$this->_getTree();

@@ -9,5 +9,6 @@ return array(
     "ABSTRACT" => '摘要',
     "THUMBNAIL" => "缩略图",
     "AUTHOR" => '作者',
-    "PUBLISH_DATE" => '发布时间'
+    "PUBLISH_DATE" => '发布时间',
+    "PUSH" => '推送'
 );

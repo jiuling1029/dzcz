@@ -53,6 +53,7 @@
 				$status=array("1"=>"已审核","0"=>"未审核");
 				$top_status=array("1"=>"已置顶","0"=>"未置顶");
 				$recommend_status=array("1"=>"已推荐","0"=>"未推荐");
+				$push_status=array("1"=>"已推送","0"=>"未推送");
 				</php>
 				<foreach name="posts" item="vo">
 				<tr>
@@ -73,9 +74,10 @@
 					</td>
 					<td>{$users[$vo['post_author']]['user_login']}</td>
 					<td>{$vo.post_date}</td>
-					<td>{$status[$vo['post_status']]}<br>{$top_status[$vo['istop']]}<br>{$recommend_status[$vo['recommended']]}
+					<td>{$status[$vo['post_status']]}<br>{$top_status[$vo['istop']]}<br>{$recommend_status[$vo['recommended']]}<br>{$push_status[$vo['push']]}
 					</td>
 					<td>
+						<a href="{:U('AdminPost/push',array('term'=>empty($term['term_id'])?'':$term['term_id'],'id'=>$vo['id']))}">{:L('PUSH')}</a> |
 						<a href="{:U('AdminPost/edit',array('term'=>empty($term['term_id'])?'':$term['term_id'],'id'=>$vo['id']))}">{:L('EDIT')}</a> | 
 						<a href="{:U('AdminPost/delete',array('term'=>empty($term['term_id'])?'':$term['term_id'],'tid'=>$vo['tid']))}" class="js-ajax-delete">{:L('DELETE')}</a></td>
 				</tr>

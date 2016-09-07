@@ -53,4 +53,22 @@ class GetarticlesController extends HomebaseController{
             $this->success($slides);
         }
     }
+
+    /**
+     * 获取最新通知
+     * @return [type] [description]
+     */
+    public function get_notice(){
+        $tag = 'field:b.id,post_title;order:listorder asc,b.id desc;limit:1';
+        $where = array('push'=>1);
+        $posts = sp_sql_posts($tag, $where);
+        if(empty($posts)){
+            $posts = sp_sql_posts($tag);
+        }
+        if(empty($posts)){
+            $this->error('没有文章了');
+        }else{
+            $this->success($posts[0]);
+        }
+    }
 }
