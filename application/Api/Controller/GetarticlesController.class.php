@@ -33,10 +33,12 @@ class GetarticlesController extends HomebaseController{
      * @param $tid
      */
     public function detail($tid){
-        $posts = sp_sql_post($tid,'field:post_title,post_content,post_modified,smeta;');
+        $posts = sp_sql_post($tid,'field:post_title,post_hits,post_content,post_modified,smeta;');
         if(empty($posts)){
             $this->error('文章不存在');
         }else{
+            $posts_model = M("Posts");
+            $posts_model->save(array("id"=>$tid,"post_hits"=>array("exp","post_hits+1")));
             $posts['smeta'] = json_decode($posts['smeta']);
             $this->success($posts);
         }
